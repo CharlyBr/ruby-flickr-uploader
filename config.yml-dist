@@ -1,0 +1,5 @@
+defaults:
+    api_key: 
+    shared_secret: 
+    access_token: 
+    access_secret: 
