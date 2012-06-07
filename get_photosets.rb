@@ -25,3 +25,4 @@ photosets.each{ |s|
 File.open('photosets.yml', 'w') do |out|
   out.write(sets.to_yaml)
 end
+puts "photosets.yml saved."

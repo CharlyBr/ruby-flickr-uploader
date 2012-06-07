@@ -11,23 +11,25 @@ require 'Photosets'
 # http://www.flickr.com/services/api/upload.api.html
 
 APP_CONFIG = YAML.load_file("config.yml")['defaults']
+
+if APP_CONFIG['upload_path'].nil? or APP_CONFIG['upload_path'].empty? or !File.exists? APP_CONFIG['upload_path']
+  puts "Your config upload_path is empty or doesn't exist."
+  exit
+end
+
 FlickRaw.api_key = APP_CONFIG['api_key']
 FlickRaw.shared_secret = APP_CONFIG['shared_secret']
 flickr.access_token = APP_CONFIG['access_token']
 flickr.access_secret = APP_CONFIG['access_secret']
 
+
+
 # From here you are logged:
 login = flickr.test.login
 puts "You are now authenticated as #{login.username}"
 
-
-#PHOTO_PATH='photo.jpg'
-# You need to be authentified to do that, see the previous examples.
-
-#f = Filer.new("/Users/charles/Desktop/Flickr/upload/AutoUpload")
 all_sets = Photosets.new
-BASE_PATH="/Users/charles/Desktop/Flickr/upload/AutoUpload"
-Dir.glob("#{BASE_PATH}/*").each do |album|
+Dir.glob("#{APP_CONFIG['upload_path']}/*").each do |album|
   next if album[0] == '.'
   album_filename = File.basename album
   #puts "album: #{album}"
@@ -65,12 +67,14 @@ Dir.glob("#{BASE_PATH}/*").each do |album|
         %Q/"#{s}"/ 
       }
       picture_id = flickr.upload_photo picture_path, :title => picture_filename, :description => "", 
-                                            :tags =>encoded_tags.join(' '), :is_public => 0
-      puts "\t upload done."
-      File.unlink picture_path
-      puts "\t file picture deleted."
-      puts "\t adding picture to set #{photoset['id']}"
-      res = flickr.call "flickr.photosets.addPhoto", {'photoset_id' => photoset['id'], 'photo_id' => picture_id}
+                                            :tags =>encoded_tags.join(' '), :is_public => APP_CONFIG['is_public']
+      if picture_id
+        puts "\t upload done."
+        File.unlink picture_path
+        puts "\t file picture deleted."
+        puts "\t adding picture to set #{photoset['id']}"
+        res = flickr.call "flickr.photosets.addPhoto", {'photoset_id' => photoset['id'], 'photo_id' => picture_id}
+      end
     end
   end
 end

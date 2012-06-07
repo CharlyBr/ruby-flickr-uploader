@@ -3,3 +3,4 @@ defaults:
     shared_secret: 
     access_token: 
     access_secret: 
+    upload_path:

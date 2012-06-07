@@ -1,5 +1,6 @@
 require 'rubygems'
 require 'flickraw'
+require 'yaml'
 
 ###
 ### Authenticate with Flickr and retrieve token and secret to use in scripts
@@ -8,7 +9,6 @@ require 'flickraw'
 APP_CONFIG = YAML.load_file("config.yml")['defaults']
 FlickRaw.api_key = APP_CONFIG['api_key']
 FlickRaw.shared_secret = APP_CONFIG['shared_secret']
-
 
 token = flickr.get_request_token
 auth_url = flickr.get_authorize_url(token['oauth_token'], :perms => 'delete')
