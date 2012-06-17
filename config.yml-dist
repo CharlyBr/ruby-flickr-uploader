@@ -4,3 +4,4 @@ defaults:
     access_token: 
     access_secret: 
     upload_path:
+    allowed_ext: ['.jpg', '.png', '.JPG']
