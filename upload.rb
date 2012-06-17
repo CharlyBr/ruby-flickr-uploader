@@ -43,12 +43,16 @@ Dir.glob("#{APP_CONFIG['upload_path']}/*").each do |album|
     
     Dir.glob("#{tags}/*").each do |picture|
 
-      #puts "picture path #{picture}"
       picture_filename = File.basename picture
-      #puts "picture filename #{picture_filename}"
+      if not APP_CONFIG['allowed_ext'].include? File.extname(picture_filename)
+        puts "- #{File.extname(picture_filename)} are not allowed for upload"
+        next
+      end
+      
+      # exclude dotfiles
       next if picture_filename[0] == '.'
       
-      puts "- will upload #{picture_filename} in album '#{album_filename}' with tags #{tags_filename.split(',')}"
+      puts "- will upload '#{picture_filename}' in album '#{album_filename}' with tags #{tags_filename.split(',')}"
       
       # Check if destination album exists
       photoset = all_sets.get_set_by_title(album_filename)
