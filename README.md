@@ -27,6 +27,14 @@ When done, you'll need your *key* and *secret* to run the script.
 
 Copy *config.yml-dist* to *config.yml* and add your key (api_key parameter) and secret (shared_secret) parameter from flickr
 
+Configuration file reference:
+* api_key: flickr API key
+* shared_secret: flickr shared secret
+* access_token: flickr access token
+* access_secret: flickr access secret 
+* upload_path: where to find files to upload
+* allowed_ext: filter files to upload by extension
+
 ### Authenticate the script with Flickr
 
 run `ruby authenticate.rb` to get your *access_token* and *access_secret*
@@ -77,7 +85,7 @@ Once a file is uploaded, it is *deleted* from the filesystem.
     $ ruby upload.rb 
     You are now authenticated as Campeur
     - will upload _MG_2070.jpg in album '2012 Oday' with tags ["Ilan"]
-	    found photoset with id: 72157629995407809
+      found photoset with id: 72157629995407809
 	    upload done.
 	    file picture deleted.
 	    adding picture to set 72157629995407809
@@ -88,3 +96,9 @@ Once a file is uploaded, it is *deleted* from the filesystem.
 * test on Ruby 1.8.x
 * add support for movie files
 * add pictures http://github.com/CharlyBr/ruby-flickr-uploader/raw/master/img/foo.png
+
+## Licence
+
+ruby-flickr-uploader is released under the MIT license:
+
+* [http://www.opensource.org/licenses/MIT](http://www.opensource.org/licenses/MIT)
