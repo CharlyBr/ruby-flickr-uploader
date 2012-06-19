@@ -1,6 +1,18 @@
+#!/usr/bin/env ruby
+# encoding: utf-8
+$LOAD_PATH << './'
+
+begin
+  found_gem = Gem::Specification.find_by_name('flickraw')
+rescue Gem::LoadError
+  puts "Could not find gem 'flickraw', try 'bundle install'"
+  exit
+end
+
 require 'rubygems'
 require 'flickraw'
 require 'Photosets'
+
 
 ##
 ## Upload script
@@ -45,13 +57,13 @@ Dir.glob("#{APP_CONFIG['upload_path']}/*").each do |album|
 
       picture_filename = File.basename picture
       if not APP_CONFIG['allowed_ext'].include? File.extname(picture_filename)
-        puts "- #{File.extname(picture_filename)} are not allowed for upload"
+        puts "- #{File.extname(picture_filename)} are not allowed for upload, file was (#{picture_filename})"
         next
       end
       
       # exclude dotfiles
       next if picture_filename[0] == '.'
-      
+
       puts "- will upload '#{picture_filename}' in album '#{album_filename}' with tags #{tags_filename.split(',')}"
       
       # Check if destination album exists
@@ -63,10 +75,9 @@ Dir.glob("#{APP_CONFIG['upload_path']}/*").each do |album|
         puts "\t found photoset with id: #{photoset['id']}"
       end
 
-      picture_path = "#{picture}".encode("ASCII-8BIT")
+      picture_path = "#{picture}".encode("UTF-8")
       encoded_tags = tags_filename.split(',').map{ |s| 
-        # encode because of UTF8-MAC bug
-        s.encode("ASCII-8BIT")
+        s.encode("UTF-8")
         # add quotes for multiple words tags
         %Q/"#{s}"/ 
       }
